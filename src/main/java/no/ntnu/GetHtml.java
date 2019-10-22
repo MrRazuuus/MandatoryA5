@@ -1,4 +1,7 @@
 package no.ntnu;
+
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
@@ -37,7 +40,7 @@ public class GetHtml {
     /**
      * Send HTTP GET
      *
-     * @param path     Relative path in the API.
+     * @param path Relative path in the API.
      */
     private void sendGet(String path) {
         try {
@@ -57,6 +60,10 @@ public class GetHtml {
                 stream.close();
                 System.out.println("Response from the server:");
                 System.out.println(responseBody);
+
+                JSONObject body = new JSONObject(responseBody);
+                int number = body.getInt("a");
+                System.out.println("a = " + number);
             } else {
                 String responseDescription = con.getResponseMessage();
                 System.out.println("Request failed, response code: " + responseCode + " (" + responseDescription + ")");
@@ -71,6 +78,7 @@ public class GetHtml {
 
     /**
      * Read the whole content from an InputStream, return it as a string
+     *
      * @param is Inputstream to read the body from
      * @return The whole body as a string
      */
