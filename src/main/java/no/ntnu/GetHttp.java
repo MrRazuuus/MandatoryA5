@@ -10,10 +10,10 @@ import java.net.URL;
 /**
  * An example showing how to send HTTP GET and read the response from the server
  */
-public class GetHtml {
+public class GetHttp {
 
     public static void main(String[] args) {
-        GetHtml example = new GetHtml("52.164.220.230", 80);
+        GetHttp example = new GetHttp("datakomm.work", 80);
         example.doExampleGet();
     }
 
@@ -25,7 +25,7 @@ public class GetHtml {
      * @param host Will send request to this host: IP address or domain
      * @param port Will use this port
      */
-    public GetHtml(String host, int port) {
+    public GetHttp(String host, int port) {
         BASE_URL = "http://" + host + ":" + port + "/";
     }
 
@@ -40,7 +40,7 @@ public class GetHtml {
     /**
      * Send HTTP GET
      *
-     * @param path Relative path in the API.
+     * @param path     Relative path in the API.
      */
     private void sendGet(String path) {
         try {
@@ -60,10 +60,11 @@ public class GetHtml {
                 stream.close();
                 System.out.println("Response from the server:");
                 System.out.println(responseBody);
-
                 JSONObject body = new JSONObject(responseBody);
-                int number = body.getInt("a");
-                System.out.println("a = " + number);
+                if (body.has("a")){
+                    int number = body.getInt("a");
+                    System.out.println("a = " + number);
+                }
             } else {
                 String responseDescription = con.getResponseMessage();
                 System.out.println("Request failed, response code: " + responseCode + " (" + responseDescription + ")");
@@ -78,7 +79,6 @@ public class GetHtml {
 
     /**
      * Read the whole content from an InputStream, return it as a string
-     *
      * @param is Inputstream to read the body from
      * @return The whole body as a string
      */
