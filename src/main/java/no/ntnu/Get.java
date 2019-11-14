@@ -10,13 +10,7 @@ import java.net.URL;
 /**
  * An example showing how to send HTTP GET and read the response from the server
  */
-public class GetHttp {
-
-    public static void main(String[] args) {
-        GetHttp example = new GetHttp("datakomm.work", 80);
-        example.doExampleGet();
-    }
-
+public class Get {
     private String BASE_URL; // Base URL (address) of the server
 
     /**
@@ -25,7 +19,7 @@ public class GetHttp {
      * @param host Will send request to this host: IP address or domain
      * @param port Will use this port
      */
-    public GetHttp(String host, int port) {
+    public Get(String host, int port) {
         BASE_URL = "http://" + host + ":" + port + "/";
     }
 
@@ -42,7 +36,8 @@ public class GetHttp {
      *
      * @param path     Relative path in the API.
      */
-    private void sendGet(String path) {
+    public JSONObject sendGet(String path) {
+        JSONObject response = null;
         try {
             String url = BASE_URL + path;
             URL urlObj = new URL(url);
@@ -60,11 +55,7 @@ public class GetHttp {
                 stream.close();
                 System.out.println("Response from the server:");
                 System.out.println(responseBody);
-                JSONObject body = new JSONObject(responseBody);
-                if (body.has("a")){
-                    int number = body.getInt("a");
-                    System.out.println("a = " + number);
-                }
+                response = new JSONObject(responseBody);
             } else {
                 String responseDescription = con.getResponseMessage();
                 System.out.println("Request failed, response code: " + responseCode + " (" + responseDescription + ")");
@@ -75,6 +66,7 @@ public class GetHttp {
             System.out.println("Something went wrong: " + e.getMessage());
             e.printStackTrace();
         }
+        return response;
     }
 
     /**
